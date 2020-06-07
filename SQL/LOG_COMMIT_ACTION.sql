@@ -27,6 +27,7 @@ SELECT *
 INTO   #log_commit_action 
 FROM   log_commit_action   
 
+SELECT * FROM #log_commit_action ORDER BY ROW_NUM ASC
 
 
 WHILE ( (SELECT Count(0) 
@@ -70,6 +71,7 @@ WHILE ( (SELECT Count(0)
                ON iss.id = i.[issue_id] 
                   AND [issue_type] = 1 
                   AND commit_hash = @commit_hash 
+				  and iss.commit_hash = i.COMMITER_HASH
                   AND iss.id IN (SELECT issue_id 
                                  FROM   issues (nolock) 
                                  WHERE  commiter_hash = @commit_hash) 
